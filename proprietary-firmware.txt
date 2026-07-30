@@ -1,9 +1,9 @@
 # Firmware - from motorola/lamu_g/lamu:15/VVTA35.51-153/cebf3c:user/release-keys
 
 gz.img;AB
-lk.img;AB|02e6bc1699d7cddf5475f2e154c1b941836d624d
+lk.img;AB|acfd7c8e08fe37dcc61756199e5992c4a6b505ef
 modem.img;AB
-preloader_raw.img;AB|3c09bc9d594e9d1f68d1b22c490d21fd93eb5da9
+preloader_raw.img;AB|63e84e59530cab8e6c45ea33e94590b46a6f84cb
 scp.img;AB
 spmfw.img;AB
 sspm.img;AB
