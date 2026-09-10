@@ -1,0 +1,29 @@
+# XT2523-2 (moto g05) and other lamu-family units without NFC hardware ship
+# as ro.boot.product.hardware.sku=nonfc_ss/nonfc_dsds. MediaTek's own
+# secure_element HAL (android.hardware.secure_element@1.2-service-mediatek)
+# still unconditionally starts on those units, fails to open the (absent)
+# eSE driver, and aborts via a CHECK() macro instead of handling the
+# failure gracefully (observed live: "MtkUiccSEService: Check failed:
+# status == STATUS_OK (status=-3 ...)" -> SIGABRT right after boot).
+#
+# There is no "disable <service>" init command (only "enable", confirmed by
+# host_init_verifier rejecting "disable" as an unknown keyword), so this
+# has to default the service off via override+disabled and re-enable it for
+# every other known SKU (see vendor/motorola/lamu/proprietary/odm/etc/init/
+# odm.init.rc for the full ro.boot.product.hardware.sku value list) instead
+# of the other way around.
+service mtk_secure_element_hal_service /vendor/bin/hw/android.hardware.secure_element@1.2-service-mediatek
+    class hal
+    user secure_element
+    group secure_element
+    disabled
+    override
+
+on property:ro.boot.product.hardware.sku=ss
+    enable mtk_secure_element_hal_service
+on property:ro.boot.product.hardware.sku=dsds
+    enable mtk_secure_element_hal_service
+on property:ro.boot.product.hardware.sku=nfc_ss
+    enable mtk_secure_element_hal_service
+on property:ro.boot.product.hardware.sku=nfc_dsds
+    enable mtk_secure_element_hal_service

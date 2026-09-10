@@ -15,6 +15,9 @@ BOARD_SUPER_PARTITION_SIZE := 8589934592
 # Inherit from common tree
 include device/motorola/mt6768-common/BoardConfigCommon.mk
 
+# Sepolicy
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+
 # Display
 TARGET_SCREEN_DENSITY := 400
 

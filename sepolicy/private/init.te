@@ -1,0 +1,17 @@
+# init has no explicit allow rule for build_attestation_prop by default, only
+# an AOSP neverallow exemption for it (system/sepolicy/.../general_sepolicy.conf:
+# "neverallow { domain -init -vendor_init } build_attestation_prop:property_service set;").
+# Without this, setting ro.product.*_for_attestation from a device-tree-owned
+# .prop file (imported by odm.prop/product.prop) is silently denied under
+# enforcing, which also broke every other property in the same imported file
+# (e.g. ro.product.odm.model fell back to its compile-time default instead of
+# the per-SKU value) rather than failing just the one line.
+#
+# Granting only `init` wasn't enough: confirmed live via dmesg on this device
+# that PropertyLoadBootDefaults() for /odm's SKU prop actually runs while pid 1
+# is still in the vendor_init domain (caught a real denial for an unrelated
+# property, ro.telephony.sim.count, from scontext=u:r:vendor_init:s0 at the
+# same boot stage - no denial for build_attestation_prop itself ever showed in
+# the log, most likely dontaudit'd upstream, but the property stayed unset).
+set_prop(init, build_attestation_prop)
+set_prop(vendor_init, build_attestation_prop)

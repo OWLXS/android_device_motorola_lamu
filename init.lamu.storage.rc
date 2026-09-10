@@ -1,0 +1,7 @@
+# Switch the internal storage (mmcblk0) I/O scheduler from the kernel's
+# default mq-deadline to BFQ. BFQ is already built in
+# (`cat /sys/block/mmcblk0/queue/scheduler` lists it alongside
+# none/mq-deadline/kyber) - this only needs to select it, no kernel
+# config/patch involved.
+on boot
+    write /sys/block/mmcblk0/queue/scheduler bfq
