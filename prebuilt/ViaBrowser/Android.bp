@@ -1,0 +1,19 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// Via Browser v7.3.3 (mark.via.gp), nodpi/minAPI19 universal build from APKMirror.
+// https://github.com/369QiXu/Via
+// Kept presigned so users can update straight from the developer's releases.
+android_app_import {
+    name: "ViaBrowser",
+    apk: "ViaBrowser.apk",
+    presigned: true,
+    // Signature v2 apk: tells Soong to leave the file untouched (no re-zipalign).
+    preprocessed: true,
+    product_specific: true,
+    dex_preopt: {
+        enabled: false,
+    },
+}
