@@ -41,4 +41,11 @@
     <string name="config_mainBuiltInDisplayCutoutRectApproximation" translatable="false">
         M -36,0 L 36,0 L 36,102 L -36,102 Z
     </string>
+
+    <!-- AOSP default (5) is LONG_PRESS_POWER_ASSISTANT. The pico/vanilla GMS
+         variants don't ship an assistant app, so a long press on power did
+         nothing visible and looked like the power menu was missing. Restore
+         the classic behavior: long press shows the global actions menu
+         (power off/restart/etc). -->
+    <integer name="config_longPressOnPowerBehavior">1</integer>
 </resources>

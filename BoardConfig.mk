@@ -4,6 +4,7 @@
 #
 
 DEVICE_PATH := device/motorola/lamu
+BOARD_KERNEL_CFI := true
 KERNEL_PATH := $(DEVICE_PATH)-kernels
 
 # DTBO
@@ -14,6 +15,11 @@ BOARD_SUPER_PARTITION_SIZE := 8589934592
 
 # Inherit from common tree
 include device/motorola/mt6768-common/BoardConfigCommon.mk
+
+TARGET_BOARD_PLATFORM := mt6768
+
+# Axion BoardConfig
+include device/axion/common/build/BoardConfigAxion.mk
 
 # Sepolicy
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private

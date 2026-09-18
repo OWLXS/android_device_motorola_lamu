@@ -1,0 +1,6 @@
+type kernelsu, domain;
+typeattribute kernelsu coredomain;
+
+# Allow KernelSU to work
+allow init kernelsu:process { transition };
+allow kernelsu init:process { sigchld };

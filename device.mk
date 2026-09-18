@@ -43,9 +43,13 @@ PRODUCT_SOONG_NAMESPACES += \
 # - swap_compression_ratio/relaxed_available_memory: lmkd's "how much room is
 #   really left" math assumes 1:1 (no compression) by default, which
 #   underestimates available memory on a zram-swap device and can kill apps
-#   earlier than necessary. 3 matches this device's measured lz4 zram ratio
-#   (~3.16x from /sys/block/zram0/mm_stat), rounded down to stay
+#   earlier than necessary. 3 matched lz4's measured ratio (~3.16x from
+#   /sys/block/zram0/mm_stat) on this device, rounded down to stay
 #   conservative.
+#   STALE as of the zstd switch (init.mt6768.rc comp_algorithm) - zstd
+#   compresses better, so 3 is now an underestimate again. Remeasure
+#   mm_stat after real usage and bump this once the new ratio is known;
+#   left at 3 for now since underestimating is the safe failure direction.
 # - kill_heaviest_task: among equally-eligible kill candidates, kill the one
 #   using the most memory so each kill relieves more pressure - fewer kills
 #   needed for the same relief.
@@ -66,7 +70,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.lmk.relaxed_available_memory=true \
     ro.lmk.kill_heaviest_task=true \
     ro.lmk.psi_partial_stall_ms=200 \
-    ro.lmk.thrashing_limit=25 \
+    ro.lmk.thrashing_limit=20 \
     ro.lmk.thrashing_limit_decay=60 \
     ro.lmk.direct_reclaim_threshold_ms=50
 
