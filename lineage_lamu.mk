@@ -75,7 +75,8 @@ PRODUCT_PRODUCT_PROPERTIES += \
 # and TARGET_EXCLUDES_AUDIOFX above)
 PRODUCT_PACKAGES += \
     ViaBrowser \
-    ViviMusic
+    ViviMusic \
+    KernelSU
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="lamu_g-user 15 VVTA35.51-137 7eabca release-keys" \
