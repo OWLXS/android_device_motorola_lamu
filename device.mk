@@ -18,6 +18,16 @@ PRODUCT_PACKAGES += \
 BOARD_SHIPPING_API_LEVEL := 202404
 PRODUCT_SHIPPING_API_LEVEL := 35
 
+# OTA updater: lamu isn't an AxionAOSP official device, so the app's
+# hardcoded default (raw.githubusercontent.com/AxionAOSP/official_devices)
+# never has an entry for it and the Updater app always shows "up to date".
+# lineage.updater.uri (Updater/.../Constants.PROP_UPDATER_URI) overrides
+# that default; {device}/{variant} get substituted by the app itself
+# (Utils.getServerURL()). Manifests published manually to OWLXS/ota, only
+# after a build is tested on device - see that repo's README.
+PRODUCT_PRODUCT_PROPERTIES += \
+    lineage.updater.uri=https://raw.githubusercontent.com/OWLXS/ota/main/{variant}/{device}.json
+
 # SKU properties
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/sku/product,$(TARGET_COPY_OUT_PRODUCT)/etc/prop) \
