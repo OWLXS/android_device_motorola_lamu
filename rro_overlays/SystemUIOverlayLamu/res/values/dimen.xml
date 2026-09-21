@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--
+         Experiment: MT6768's HWC appears unable to give a hardware overlay
+         plane to the PiP window's SurfaceView when it combines scaling +
+         alpha blending + rounded corners + box shadow simultaneously, so
+         SurfaceFlinger falls back to full-screen Client (GPU) composition
+         for as long as PiP stays open (measured: composition=CLIENT stuck
+         at 4-8 layers, GPU pinned at max OPP, Launcher framestats 75-92%
+         janky). Zeroing corner radius and shadow radius removes two of
+         those factors to see if that's enough for the layer to qualify
+         for hardware composition again.
+    -->
+    <dimen name="pip_corner_radius">0dp</dimen>
+    <dimen name="pip_shadow_radius">0dp</dimen>
+</resources>
