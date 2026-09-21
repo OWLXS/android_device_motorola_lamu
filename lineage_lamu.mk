@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+TARGET_DISABLE_EPPE := true
+
 # Identity variables for Axion
 AXION_MAINTAINER := TheMoonX_-
 AXION_PROCESSOR := MediaTek_Helio_G81_Extreme
@@ -20,6 +22,13 @@ TARGET_DOZE_SIDE_FPS_PULSE_SUPPORTED := false
 TARGET_NEEDS_VULKAN_MEDIA_FIX := true
 TARGET_DISABLES_LIBPERF := true
 
+# Desativar/Incluir app
+TARGET_INCLUDE_AXFX := true
+TARGET_EXCLUDES_AUDIOFX := true
+
+PRODUCT_PACKAGES += \
+    Debloat
+
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
@@ -27,23 +36,10 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Inherit from device makefile.
 $(call inherit-product, device/motorola/lamu/device.mk)
 
-# AxionAOSP identity. Must precede the common inherit below: version.mk is
-# parsed during it and reads these at that point. Camera props (set earlier
-# in this file, above) are kept explicit for this tree instead of left unset,
-# since we already probe real per-SKU hardware info there.
-LINEAGE_BUILDTYPE := UNOFFICIAL
-TARGET_EXCLUDES_AUDIOFX := true
-
 # version.mk publishes AXION_PROCESSOR as persist.sys.axion_cpu_info, but
 # VendorSupport reads persist.sys.axion_processor_info.
 PRODUCT_PRODUCT_PROPERTIES += \
     persist.sys.axion_processor_info=$(AXION_PROCESSOR)
-
-# Drops the LineageOS apps that have equivalents users install themselves,
-# and ships Vivi Music in place of Twelve. (ViaBrowser/ViviMusic prebuilts
-# themselves are added below in the Custom Apps block.)
-PRODUCT_PACKAGES += \
-    Debloat
 
 # Inherit Axion common defaults
 $(call inherit-product, device/axion/common/config/defaults_common.mk)
@@ -75,8 +71,7 @@ PRODUCT_PRODUCT_PROPERTIES += \
 # and TARGET_EXCLUDES_AUDIOFX above)
 PRODUCT_PACKAGES += \
     ViaBrowser \
-    ViviMusic \
-    KernelSU
+    ViviMusic
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="lamu_g-user 15 VVTA35.51-137 7eabca release-keys" \

@@ -25,7 +25,7 @@ include device/axion/common/build/BoardConfigAxion.mk
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 
 # Display
-TARGET_SCREEN_DENSITY := 400
+TARGET_SCREEN_DENSITY := 411
 
 # Kernel
 TARGET_KERNEL_DEVICE := mgk_64_k66
