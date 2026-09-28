@@ -4,7 +4,13 @@
 #
 
 DEVICE_PATH := device/motorola/lamu
-BOARD_KERNEL_CFI := true
+# BOARD_KERNEL_CFI has no consumer anywhere in this tree (verified: build/make,
+# build/soong, vendor/lineage, system/, hardware/, external/, device/motorola -
+# all zero matches). The 17/09 and follow-up CFI boot-panic fixes were both
+# 100% kernel-side (gki_defconfig + kernel_device_modules-6.6 overlay), never
+# touched this flag. Left at false to match reality (kernel currently builds
+# without CFI_CLANG) rather than as something load-bearing.
+BOARD_KERNEL_CFI := false
 KERNEL_PATH := $(DEVICE_PATH)-kernels
 
 # DTBO
@@ -18,14 +24,14 @@ include device/motorola/mt6768-common/BoardConfigCommon.mk
 
 TARGET_BOARD_PLATFORM := mt6768
 
-# Axion BoardConfig
-include device/axion/common/build/BoardConfigAxion.mk
-
 # Sepolicy
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 
 # Display
 TARGET_SCREEN_DENSITY := 411
+
+# Vulkan
+TARGET_USES_VULKAN := true
 
 # Kernel
 TARGET_KERNEL_DEVICE := mgk_64_k66

@@ -41,6 +41,18 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.lamu.storage.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.lamu.storage.rc
 
+# Vulkan capability declaration (standard AOSP permission XMLs - the Mali
+# GPU on this SoC supports Vulkan 1.4; without these, apps/Play Store can't
+# see hardware.vulkan.version/level/compute feature flags). See BoardConfig.mk
+# for TARGET_USES_VULKAN.
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml \
+    frameworks/native/data/etc/android.hardware.vulkan.version-1_4.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.version.xml \
+    frameworks/native/data/etc/android.hardware.vulkan.level-1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.level.xml \
+    frameworks/native/data/etc/android.hardware.vulkan.compute-0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.compute.xml \
+    frameworks/native/data/etc/android.software.vulkan.deqp.level-2025-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.vulkan.deqp.level.xml \
+    frameworks/native/data/etc/android.software.opengles.deqp.level-2025-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.opengles.deqp.level.xml
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay
@@ -94,8 +106,9 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 PRODUCT_PACKAGES += \
     bpfMemEvents.bpf
 
-# SPL
-BOOT_SECURITY_PATCH := 2026-04-05
+# SPL - matches the vendor blob extraction source (RETBR VVTA35.51-158,
+# extracted 28/09; see vendor/motorola/lamu commit history)
+BOOT_SECURITY_PATCH := 2026-08-05
 INIT_BOOT_SECURITY_PATCH := $(BOOT_SECURITY_PATCH)
 VENDOR_SECURITY_PATCH := $(BOOT_SECURITY_PATCH)
 
