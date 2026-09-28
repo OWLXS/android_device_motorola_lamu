@@ -30,7 +30,13 @@ TARGET_SCREEN_DENSITY := 411
 # Kernel
 TARGET_KERNEL_DEVICE := mgk_64_k66
 TARGET_KERNEL_DIR := $(KERNEL_PATH)/6.6
-TARGET_KERNEL_PLATFORM_SOURCE := motorola_lamu
+# TARGET_KERNEL_PLATFORM_SOURCE is deliberately unset. When it is set together
+# with TARGET_PREBUILT_KERNEL, `lunch` calls build_kernel() (vendor/lineage
+# envsetup.sh), which repo-inits LineageOS' stock kernel manifest into
+# out-kernel/, builds that stock kernel, and copies its dist over
+# $(TARGET_KERNEL_DIR) -- replacing our kernel (KSU/susfs, fixes) without any
+# warning. Our kernel is built separately (OWLXS kernel manifest, Kleaf) and
+# its dist is linked into $(TARGET_KERNEL_DIR) instead.
 TARGET_PROVIDES_STATIC_MODULE_LISTS := true
 
 BOARD_SYSTEM_KERNEL_MODULES_LOAD := $(strip $(shell cat $(TARGET_KERNEL_DIR)/system_dlkm.modules.load))
