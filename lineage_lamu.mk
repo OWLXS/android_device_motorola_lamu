@@ -16,25 +16,9 @@ TARGET_DOZE_SIDE_FPS_PULSE_SUPPORTED := false
 TARGET_NEEDS_VULKAN_MEDIA_FIX := true
 TARGET_DISABLES_LIBPERF := true
 
-# Lunaris config (vendor/lineage/config/lunaris.mk, vendor/pixel/gms,
-# vendor/pixel/themepicker). GMS kept on (full Google experience, per user
-# choice) - Maps/Files default OFF upstream, need explicit true here;
-# Photos/Wallpapers/Pixel Launcher already default true, set explicitly
-# anyway for clarity.
-WITH_GMS := true
-WITH_GMS_COMMS_SUITE := true
-WITH_PIXEL_LAUNCHER := true
-TARGET_USE_MAPS := true
-TARGET_USE_FILES := true
-TARGET_USE_GPHOTOS := true
-TARGET_USE_WALLPAPERS := true
-
-# Smoother scrolling at the cost of a bit more CPU wakefulness
-SURFACE_FLINGER_BOOST := true
-
 # Panel is a dual-mode 60/90Hz IPS LCD (confirmed: FrameworkOverlayLamuLite's
 # config_defaultPeakRefreshRate=90). Feeds persist.sys.display_refresh_rates_list
-# (vendor/lineage/config/lunaris.mk) and the frame_rate_category soong config.
+# and the frame_rate_category soong config.
 TARGET_SUPPORTED_REFRESH_RATES := 60,90
 $(call soong_config_set,surfaceflinger,frame_rate_category_high,90)
 $(call soong_config_set,surfaceflinger,frame_rate_category_min,60)

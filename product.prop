@@ -50,6 +50,3 @@ ro.input.video_enabled=false
 
 # EGL shader cache
 ro.egl.blobcache.multifile_limit=67108864
-
-# Lunaris maintainer identity
-ro.lunaris.maintainer=TheMoon'X - Emanuel
