@@ -23,15 +23,8 @@ TARGET_SUPPORTED_REFRESH_RATES := 60,90
 $(call soong_config_set,surfaceflinger,frame_rate_category_high,90)
 $(call soong_config_set,surfaceflinger,frame_rate_category_min,60)
 
-# Desativar/Incluir app
-TARGET_INCLUDE_AXFX := true
-TARGET_EXCLUDES_AUDIOFX := true
-
 PRODUCT_PACKAGES += \
     Debloat
-
-# Enable AxionFx
-$(call inherit-product-if-exists, packages/apps/AxionFx/config.mk)
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
@@ -65,8 +58,7 @@ PRODUCT_PRODUCT_PROPERTIES += \
     dalvik.vm.dex2oat-threads=6 \
     dalvik.vm.image-dex2oat-threads=6
 
-# Custom Apps (Jelly/AudioFX already excluded via Debloat LOCAL_OVERRIDES_PACKAGES
-# and TARGET_EXCLUDES_AUDIOFX above)
+# Custom Apps (Jelly already excluded via Debloat LOCAL_OVERRIDES_PACKAGES)
 PRODUCT_PACKAGES += \
     ViaBrowser \
     ViviMusic
