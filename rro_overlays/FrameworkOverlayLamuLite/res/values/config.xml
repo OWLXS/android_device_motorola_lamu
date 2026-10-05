@@ -57,4 +57,36 @@
     <string name="config_mainBuiltInDisplayCutoutRectApproximation" translatable="false">
         M -24,0 L 24,0 L 24,70 L -24,70 Z
     </string>
+    <!-- lamu: ZramWriteback.scheduleZramWriteback() (StorageManagerService)
+         is only called when this is true. It schedules BOTH idle-page
+         marking and the writeback-to-disk job, but ZramWriteback itself
+         checks /sys/block/zram0/backing_dev and no-ops the writeback half
+         when it reads "none" (our case - no backing device configured,
+         deliberately, no measured gain). We only want the idle-marking
+         half, as a prerequisite for CONFIG_ZRAM_MULTI_COMP recompress
+         (type=idle), which needs pages already marked idle to find
+         anything to recompress. -->
+    <bool name="config_zramWriteback">true</bool>
+
+    <!-- lamu: ProcessList.updateOomLevels() (frameworks/base/services/core/
+         java/com/android/server/am/ProcessList.java) computes the minfree
+         thresholds lmkd kills at (sys.lmk.minfree_levels) from a per-level
+         low/high table, scaled by total RAM - at our ~3.8GB this always
+         clamps to the "high" end of that table (scale=1.0, since the scale
+         formula saturates above 700MB), so this device gets the most
+         generous/latest-possible kill thresholds the framework has, same
+         as a flagship. Measured live on real hardware (04/10): cached-app
+         threshold sits at 80640 pages (~315MB free) before lmkd will even
+         consider killing a cached app, with 732 resident tasks and RAM
+         98.8% full at the time. This adjust is added proportionally to
+         every level (see updateOomLevels(): mOomMinFree[i] += adjust *
+         mOomMinFree[i] / mOomMinFree[last]), so the cached-app level moves
+         the most, foreground/visible move least. +12288 (12MB) is a
+         moderate starting point - nudges lmkd to reclaim cached apps a
+         bit sooner given how many tasks this device keeps resident, not a
+         tuned-on-device final value. Revisit with scripts/ui-bench once
+         this build actually runs on hardware (see
+         kernellamu-device-load-diagnostico-dstate-swap memory for the
+         measurement this is based on). -->
+    <integer name="config_lowMemoryKillerMinFreeKbytesAdjust">12288</integer>
 </resources>
