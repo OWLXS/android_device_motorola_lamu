@@ -9,6 +9,11 @@ KERNEL_PATH := $(DEVICE_PATH)-kernels
 # DTBO
 BOARD_KERNEL_SEPARATED_DTBO := true
 
+# lamu: ReSukiSU's ksud daemon needs its own SELinux domain declared
+# (kernelsu.te) to do the kernel<->userspace root-grant handshake -- was
+# missing in this A17 tree, likely why root never actually got granted.
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+
 # Partitions
 BOARD_SUPER_PARTITION_SIZE := 8589934592
 
@@ -18,10 +23,18 @@ include device/motorola/mt6768-common/BoardConfigCommon.mk
 # Display
 TARGET_SCREEN_DENSITY := 400
 
+# Vulkan
+TARGET_USES_VULKAN := true
+
 # Kernel
 TARGET_KERNEL_DEVICE := mgk_64_k66
 TARGET_KERNEL_DIR := $(KERNEL_PATH)/6.6
-TARGET_KERNEL_PLATFORM_SOURCE := motorola_lamu
+# lamu: TARGET_KERNEL_PLATFORM_SOURCE removed on purpose (2026-10-04).
+# With it set, lunch calls build_kernel() and overwrites our prebuilt
+# kernel with stock LineageOS own kernel/vendor-modules build -- see
+# device/motorola/lamu-kernels/6.6, populated via symlinks to our own
+# Kleaf/Bazel build output (kernel-lamu-tree-a17/out/mgk_64_k66/dist),
+# not by this flags normal prebuilt-download mechanism.
 TARGET_PROVIDES_STATIC_MODULE_LISTS := true
 
 BOARD_SYSTEM_KERNEL_MODULES_LOAD := $(strip $(shell cat $(TARGET_KERNEL_DIR)/system_dlkm.modules.load))

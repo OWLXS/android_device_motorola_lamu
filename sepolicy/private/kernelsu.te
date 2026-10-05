@@ -1,0 +1,11 @@
+# lamu: required for ReSukiSU's ksud userspace daemon to have a proper
+# domain for the kernel->userspace root-grant handshake. Missing from this
+# A17 tree (ported from the old lineage-23.2 fork's b2f3e7f commit), was
+# the likely reason root never actually got granted even though CONFIG_KSU
+# is correctly compiled into the real boot Image. 04/10.
+type kernelsu, domain;
+typeattribute kernelsu coredomain;
+
+# Allow KernelSU to work
+allow init kernelsu:process { transition };
+allow kernelsu init:process { sigchld };
