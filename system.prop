@@ -1,0 +1,60 @@
+# lamu: LMKD tuning (2026-10-03)
+#
+# ro.config.low_ram defaults to false and nothing in this tree sets it, so
+# lmkd (system/memory/lmkd/lmkd.cpp) silently classifies lamu as a
+# "high-end" device and uses its high-end defaults: thrashing_limit=100%,
+# thrashing_limit_decay=10%, psi_partial_stall_ms=70ms, per_app_memcg=false.
+# lamu is actually a budget MT6768 device -- those defaults are why lmkd
+# almost never reacts to real memory pressure (barely kills).
+#
+# Deliberately NOT setting ro.config.low_ram=true here: that flag also
+# changes ActivityManager.isLowRamDevice() and Play Store app filtering,
+# which is a much bigger decision than memory-reclaim tuning. Instead we
+# override just the lmkd-specific properties with the same values lmkd
+# itself would have picked for a low-ram device.
+ro.lmk.thrashing_limit=30
+ro.lmk.thrashing_limit_decay=50
+ro.lmk.psi_partial_stall_ms=200
+ro.lmk.per_app_memcg=true
+
+# Kill the heaviest eligible process per cycle instead of the first one
+# found -- frees more memory per kill, fewer kill cycles needed on a
+# RAM-constrained device. Default is false (fast decision, not best one).
+ro.lmk.kill_heaviest_task=true
+
+# get_free_swap() caps free_swap at (easy_available * ratio/div). Default
+# ratio=1/div=1 assumes zero compression, which understates how much swap
+# zram can actually hold and can make lmkd think it is swap-starved
+# earlier than it really is. 5/2 = 2.5x is a conservative estimate for
+# zstd on Android anon memory (real ratio is usually higher, but we have
+# not measured it on this device yet -- revisit once we can actually
+# boot and profile it). Also enables the matching easy_available
+# adjustment in calc_available_memory(), which is gated on this same flag.
+ro.lmk.swap_compression_ratio=5
+ro.lmk.swap_compression_ratio_div=2
+ro.lmk.relaxed_available_memory=true
+
+# SurfaceFlinger/RenderEngine CPU scheduler floor (2026-10-04).
+#
+# This is stock AOSP, not a ROM-specific hack: frameworks/native/services/
+# surfaceflinger/main_surfaceflinger.cpp calls SurfaceFlinger::setSchedAttr()
+# on startup, which reads this exact property and -- if non-zero -- issues
+# sched_setattr(SCHED_FLAG_UTIL_CLAMP, sched_util_min=<value>) on SF's own
+# process (comment in the source says "maybe an overkill but we want to
+# cover important threads like RenderEngine"). This tells the CFS/EAS
+# scheduler to never treat SurfaceFlinger/RenderEngine as using less than
+# <value>/1024 of a CPU's capacity, even when idle -- so the governor can't
+# park/underclock the core those threads are about to run on right when a
+# frame needs to be composited. Reduces missed-vsync jank at a small,
+# fairly fixed battery cost from the slightly-higher floor.
+#
+# Several custom ROMs (Evolution X, Lunaris-AOSP) expose this as a
+# SURFACE_FLINGER_BOOST build flag; both just set this same property to the
+# same value (135) when enabled, with no device-specific logic -- nothing
+# to "port", the AOSP consumer is already present in this tree's own
+# frameworks/native, so we can just set the property directly. Confirmed
+# via gki_defconfig that this kernel has CONFIG_UCLAMP_TASK=y and
+# CONFIG_UCLAMP_TASK_GROUP=y, so the sched_setattr() call will actually
+# take effect (not silently fail -- if it did, setSchedAttr() just ALOGWs
+# and moves on, so this is safe to try either way).
+ro.surface_flinger.uclamp.min=135
