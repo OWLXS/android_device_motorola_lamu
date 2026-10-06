@@ -56,6 +56,12 @@ TARGET_SUPPORTED_REFRESH_RATES := 60,90
 $(call soong_config_set,surfaceflinger,frame_rate_category_high,90)
 $(call soong_config_set,surfaceflinger,frame_rate_category_min,60)
 
+# Odex: compila system/priv-app inteiro AOT no build (em vez do default
+# speed-profile, que depende de profile ainda vazio no primeiro boot e usa
+# JIT/interpretado até esquentar). Evita JIT em uso normal num SoC fraco;
+# o custo (odex maior) é absorvido pela compressao lz4hc,9 do erofs acima.
+PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := speed
+
 # lamu: CONFIG_CFI_CLANG is required by the FCM matrix (202404) this release
 # targets, but enabling it panics on boot (do_one_initcall CFI failure
 # loading bootprof.ko) -- confirmed via expdb dump after a real bootloop on
