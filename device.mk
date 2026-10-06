@@ -14,6 +14,11 @@ PRODUCT_PACKAGES += \
     FrameworkOverlayLamuLite \
     SystemUIOverlayLamu
 
+# Default apps (presigned prebuilts, see prebuilt/*/Android.bp for version/source)
+PRODUCT_PACKAGES += \
+    ViaBrowser \
+    ViviMusic
+
 # Shipping API Level
 BOARD_SHIPPING_API_LEVEL := 202404
 PRODUCT_SHIPPING_API_LEVEL := 35

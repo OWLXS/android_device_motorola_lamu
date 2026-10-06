@@ -1,0 +1,19 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// vivi-music v6.0.7, FOSS build (izzydroid-universal-foss-release.apk)
+// https://github.com/vivizzz007/vivi-music
+// Kept presigned so users can update straight from the developer's releases.
+android_app_import {
+    name: "ViviMusic",
+    apk: "ViviMusic.apk",
+    presigned: true,
+    // Signature v2 apk: tells Soong to leave the file untouched (no re-zipalign).
+    preprocessed: true,
+    product_specific: true,
+    dex_preopt: {
+        enabled: false,
+    },
+}
