@@ -4,6 +4,57 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- lamu: AOSP's own config_statusBarIcons lists stacked_mobile and
+         mobile before wifi, and that array order is what decides their
+         left-to-right placement in the status bar, so the mobile signal
+         ends up drawn ahead of wifi. Reorder wifi ahead of both for this
+         device only. Copied from AOSP's array as-is apart from that single
+         move, so every other icon keeps its original slot. -->
+    <string-array name="config_statusBarIcons">
+        <item><xliff:g id="id">@*android:string/status_bar_no_calling</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_call_strength</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_alarm_clock</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_rotate</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_headset</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_data_saver</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_ime</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_sync_failing</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_sync_active</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_nfc</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_tty</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_speakerphone</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_cdma_eri</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_data_connection</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_phone_evdo_signal</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_phone_signal</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_secure</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_managed_profile</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_connected_display</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_vpn</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_bluetooth</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_camera</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_microphone</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_location</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_mute</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_volume</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_zen</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_screen_record</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_cast</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_ethernet</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_oem_satellite</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_vowifi</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_volte</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_vonr</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_hotspot</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_network_traffic</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_wifi</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_stacked_mobile</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_mobile</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_airplane</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_battery</xliff:g></item>
+        <item><xliff:g id="id">@*android:string/status_bar_sensors_off</xliff:g></item>
+    </string-array>
+
     <!-- The bounding path of the cutout region of the main built-in display.
          Must either be empty if there is no cutout region, or a string that is parsable by
          {@link android.util.PathParser}.
