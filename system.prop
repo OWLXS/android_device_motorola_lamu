@@ -58,3 +58,13 @@ ro.lmk.relaxed_available_memory=true
 # take effect (not silently fail -- if it did, setSchedAttr() just ALOGWs
 # and moves on, so this is safe to try either way).
 ro.surface_flinger.uclamp.min=135
+
+# Per-SKU marketname (ro.product.marketname) -- this device tree covers 3
+# real Motorola SKUs with different specs (G05 single camera, G15/G15
+# Power dual camera) via one build, same as the existing sku/product and
+# sku/odm model-string overrides, but ro.product.marketname has no
+# per-SKU source anywhere else (sku/product's fingerprint_*.prop sets
+# ro.product.model, a different prop meant for attestation/fingerprint,
+# not the user-facing "About phone" name). ROM-agnostic: any ROM's
+# Settings reads ro.product.marketname, not just ProjectInfinity-X's.
+import /system/etc/prop/sku_${ro.boot.hardware.sku}.prop
