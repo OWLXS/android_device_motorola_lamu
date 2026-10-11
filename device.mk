@@ -61,6 +61,33 @@ TARGET_SUPPORTED_REFRESH_RATES := 60,90
 $(call soong_config_set,surfaceflinger,frame_rate_category_high,90)
 $(call soong_config_set,surfaceflinger,frame_rate_category_min,60)
 
+# Charging control (vendor.lineage.health-service.default, TOGGLE mode).
+# /sys/devices/platform/charger/enable_charger confirmed live on hardware
+# (10/10): writing 0 stops charging completely (battery/status -> "Not
+# charging", stable 15s+) and writing 1 resumes it. This is the real
+# hardware charge enable/disable (DEVICE_ATTR_RW(enable_charger) in
+# mtk_charger.c calling charger_dev_enable() directly), not a power_supply
+# class property.
+#
+# mtk-master-charger/input_current_limit (power_supply class, tried
+# first) looked like it worked -- write succeeds, no error -- but does
+# NOT actually stop charging: it is just one input the charger algorithm
+# thread folds into its own current calculation every cycle, so a write
+# of 0 gets silently reverted back within ~1s. Confirmed reproducible
+# (10 x 1s polls all showed the value already back to 3000000). Do not
+# revert to that node without re-confirming on hardware first.
+#
+# No PRODUCT_SOONG_CONFIG_NAMESPACES/VARIABLES needed on this tree --
+# soong_config_set auto-registers the namespace/variable if it doesn't
+# exist yet (build/make/core/config.mk:soong_config_define_internal), same
+# as the surfaceflinger calls above which also skip that declaration.
+$(call soong_config_set,lineage_health,charging_control_charging_path,/sys/devices/platform/charger/enable_charger)
+$(call soong_config_set,lineage_health,charging_control_charging_enabled,1)
+$(call soong_config_set,lineage_health,charging_control_charging_disabled,0)
+
+PRODUCT_PACKAGES += \
+    vendor.lineage.health-service.default
+
 # Odex: compila system/priv-app inteiro AOT no build (em vez do default
 # speed-profile, que depende de profile ainda vazio no primeiro boot e usa
 # JIT/interpretado até esquentar). Evita JIT em uso normal num SoC fraco;
