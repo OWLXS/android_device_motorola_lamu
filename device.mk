@@ -26,7 +26,8 @@ PRODUCT_SHIPPING_API_LEVEL := 35
 # SKU properties
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/sku/product,$(TARGET_COPY_OUT_PRODUCT)/etc/prop) \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/sku/odm,$(TARGET_COPY_OUT_ODM)/etc/prop)
+    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/sku/odm,$(TARGET_COPY_OUT_ODM)/etc/prop) \
+    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/sku/system,$(TARGET_COPY_OUT_SYSTEM)/etc/prop)
 
 # Vulkan capability declaration (standard AOSP permission XMLs -- the Mali
 # GPU on this SoC supports Vulkan 1.4; without these, apps/Play Store can't
@@ -113,6 +114,13 @@ PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
+
+# Signing keys -- ours, not Infinity-X's (that only gets wired up via
+# vendor/infinity-priv, a private repo we don't have; without it every
+# cert silently falls back to AOSP's literal public testkey). Own
+# identity regardless of ROM-on-top, so it lives here, not per-flavor.
+# security/*.pk8 is gitignored -- never let this get committed.
+PRODUCT_DEFAULT_DEV_CERTIFICATE := device/motorola/lamu/security/testkey
 
 # SPL
 BOOT_SECURITY_PATCH := 2026-08-05

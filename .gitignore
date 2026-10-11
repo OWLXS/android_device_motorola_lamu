@@ -1,0 +1,3 @@
+# Private signing keys -- NEVER commit these. Only *.x509.pem (public cert)
+# is safe to publish; *.pk8 is the private half and must stay local-only.
+security/*.pk8
